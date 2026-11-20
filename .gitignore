@@ -1,0 +1,20 @@
+# Секреты
+.env
+*.pem
+*.key
+# Резервные копии БД (содержат данные)
+backups/*
+!backups/.gitkeep
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+*.db
+.venv/
+venv/
+# IDE
+.idea/
+.vscode/
