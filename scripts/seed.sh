@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Заполнение системы тестовыми (вымышленными) данными через API
 source "$(dirname "$0")/common.sh"
-post() { curl -s -X POST "$APP_URL$1" -H 'Content-Type: application/json' -d "$2"; echo; }
+# Тело запроса передаётся через stdin: на Windows (Git Bash) кириллица в аргументах
+# командной строки искажается, а через поток остаётся в UTF-8
+post() { printf '%s' "$2" | curl -s -X POST "$APP_URL$1" -H 'Content-Type: application/json; charset=utf-8' --data-binary @-; echo; }
 # id из JSON-ответа без зависимости от Python (на Windows python3 может отсутствовать)
 id_of() { sed -n 's/.*"id":[[:space:]]*\([0-9]*\).*/\1/p'; }
 B1=$(post /api/books '{"title":"Мастер и Маргарита","author":"Михаил Булгаков","isbn":"978-5-17-090001","year":1967,"copies":3}' | id_of)
