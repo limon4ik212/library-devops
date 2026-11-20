@@ -1,0 +1,20 @@
+groups:
+  - name: library
+    rules:
+      - alert: LibraryAppDown
+        expr: up{job="library-app"} == 0
+        for: 1m
+        labels: {severity: critical}
+        annotations:
+          summary: "Приложение библиотеки недоступно"
+      - alert: LibraryDatabaseDown
+        expr: library_db_up == 0
+        for: 30s
+        labels: {severity: critical}
+        annotations:
+          summary: "Приложение потеряло соединение с PostgreSQL"
+      - alert: LibraryHighErrorRate
+        expr: increase(library_http_errors_total[5m]) > 5
+        labels: {severity: warning}
+        annotations:
+          summary: "Более 5 ошибок 5xx за 5 минут"
